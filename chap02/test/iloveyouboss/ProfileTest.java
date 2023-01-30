@@ -1,19 +1,27 @@
 package iloveyouboss;
 
+import org.junit.Before;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ProfileTest {
+    private Profile profile;
+    private BooleanQuestion question;
+    private Criteria criteria;
+
+    @Before
+    public void create() {
+        profile = new Profile("Bull Hockey, Inc");
+        question = new BooleanQuestion(1, "Got bonuses?");
+        criteria = new Criteria();
+    }
 
     @Test
-    public void matchAnswerFalseWhenMustMatchCriteriaNotMet() {
-        Profile profile = new Profile("Bull Hockey, Inc");
-        Question question = new BooleanQuestion(1, "Got bonuses?");
+    public void matchAnswersFalseWhenMustMatchCriteriaNotMet() {
         Answer profileAnswer = new Answer(question, Bool.FALSE);
         profile.add(profileAnswer);
 
-        Criteria criteria = new Criteria();
         Answer criteriaAnswer = new Answer(question, Bool.TRUE);
         Criterion criterion = new Criterion(criteriaAnswer, Weight.MustMatch);
 
@@ -21,7 +29,22 @@ class ProfileTest {
 
         boolean matches = profile.matches(criteria);
 
-        assertEquals(matches, false);
+        assertFalse(matches);
+        // 유지보수가 힘든 테스트
+    }
+    @Test
+    public void matchAnswersTrueForAnyDontcare() {
+        Answer profileAnswer = new Answer(question, Bool.FALSE);
+        profile.add(profileAnswer);
+
+        Answer criteriaAnswer = new Answer(question, Bool.TRUE);
+        Criterion criterion = new Criterion(criteriaAnswer, Weight.DontCare);
+
+        criteria.add(criterion);
+
+        boolean matches = profile.matches(criteria);
+
+        assertTrue(matches);
         // 유지보수가 힘든 테스트
     }
 }
