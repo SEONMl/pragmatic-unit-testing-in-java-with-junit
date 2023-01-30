@@ -1,6 +1,6 @@
 package iloveyouboss;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -10,7 +10,7 @@ class ProfileTest {
     private BooleanQuestion question;
     private Criteria criteria;
 
-    @Before
+    @BeforeEach //JUnit5 애너테이션
     public void create() {
         profile = new Profile("Bull Hockey, Inc");
         question = new BooleanQuestion(1, "Got bonuses?");
