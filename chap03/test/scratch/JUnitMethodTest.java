@@ -3,8 +3,9 @@ package scratch;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import javax.naming.InsufficientResourcesException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 public class JUnitMethodTest {
 
@@ -32,6 +33,20 @@ public class JUnitMethodTest {
     public void assertThatTest() {
         account.deposit(100);
         assertEquals(100, account.getBalance());
+    }
+
+    // JUnit4
+//    @Test(expected= InsufficientResourcesException.class)
+//    public void throwsWhenWithdrawingTooMuch() {
+//        account.withdraw(100);
+//    }
+
+    //JUnit5
+    @Test
+    public void throwsWhenWithdrawingTooMuch() {
+        assertThrows(IllegalArgumentException.class, ()->{
+            account.withdraw(100);
+        });
     }
 
 }

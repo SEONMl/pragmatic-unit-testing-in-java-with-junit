@@ -1,5 +1,7 @@
 package scratch;
 
+import javax.naming.InsufficientResourcesException;
+
 public class Account {
     private int balance;
     private String name;
@@ -14,6 +16,7 @@ public class Account {
     }
 
     public void withdraw(int money) {
+        if(balance-money<0) throw new IllegalArgumentException();
         this.balance -= money;
     }
 
