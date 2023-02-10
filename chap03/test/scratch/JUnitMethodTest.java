@@ -5,6 +5,11 @@ import org.junit.jupiter.api.Test;
 
 import javax.naming.InsufficientResourcesException;
 
+import java.beans.FeatureDescriptor;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.nio.BufferUnderflowException;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class JUnitMethodTest {
@@ -47,6 +52,14 @@ public class JUnitMethodTest {
         assertThrows(IllegalArgumentException.class, ()->{
             account.withdraw(100);
         });
+    }
+
+    @Test
+    public void readsFromTestFile() throws Exception {
+        String filename = "test.txt";
+        BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+        writer.write("test data");
+        writer.close();
     }
 
 }
