@@ -1,6 +1,7 @@
 package scratch;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.io.BufferedWriter;
@@ -56,6 +57,13 @@ public class JUnitMethodTest {
         BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
         writer.write("test data");
         writer.close();
+    }
+
+    @Test
+    @Disabled
+    public void somethingWeCannotHandleRightNow() {
+        // JUnit4의 @Ignore
+        // 테스트 메서드 비활성화
     }
 
 }
