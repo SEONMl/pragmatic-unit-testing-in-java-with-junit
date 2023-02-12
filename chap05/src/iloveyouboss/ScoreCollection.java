@@ -7,6 +7,7 @@ public class ScoreCollection {
     private List<Scoreable> scores = new ArrayList<>();
 
     public void add(Scoreable scoreable) {
+        if(scoreable==null) throw new IllegalArgumentException();
         scores.add(scoreable);
     }
 
