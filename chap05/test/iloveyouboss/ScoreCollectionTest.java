@@ -3,8 +3,7 @@ package iloveyouboss;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ScoreCollectionTest {
 
@@ -33,5 +32,21 @@ public class ScoreCollectionTest {
         assertThrows(IllegalArgumentException.class, ()->{
             collection.add(null);
         });
+    }
+
+    @Test
+    public void dealsWithIntegerOverflow() {
+        collection.add(()->Integer.MAX_VALUE);
+        collection.add(()->1);
+
+        assertEquals(collection.arithmeticMean(), -1073741824); // 오버플로우 발생
+    }
+
+    @Test
+    public void doseNotProperlyHandleIntegerOverflow() {
+        collection.add(()->Integer.MAX_VALUE);
+        collection.add(()->1);
+
+        assertTrue(collection.arithmeticMean() < 0);
     }
 }
