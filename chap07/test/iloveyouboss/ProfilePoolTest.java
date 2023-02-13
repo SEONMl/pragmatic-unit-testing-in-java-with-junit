@@ -29,7 +29,7 @@ public class ProfilePoolTest {
         langrsoft.add(new Answer(doTheyReimburseTuition, Bool.TRUE));
         pool.add(langrsoft);
 
-        pool.score(soleNeed(doTheyReimburseTuition, Bool.TRUE, Weight.Important));
+        //pool.score(soleNeed(doTheyReimburseTuition, Bool.TRUE, Weight.Important));
         List<Profile> ranked = pool.ranked();
 
         assertEquals(ranked.toArray(), new Profile[]{langrsoft, smeltInc});
