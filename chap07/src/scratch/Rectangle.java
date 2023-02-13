@@ -1,5 +1,7 @@
 package scratch;
 
+import java.awt.*;
+
 public class Rectangle {
     private Point origin;
     private Point opposite;
