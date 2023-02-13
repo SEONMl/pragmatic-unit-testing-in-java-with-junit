@@ -26,4 +26,10 @@ public class Criteria implements Iterable<Criterion> {
         int totalProduct = Arrays.stream(numbers).reduce(1, (product, number) -> product * number);
         return Math.pow(totalProduct, 1.0 / numbers.length);
     }
+
+    private Criteria soleNeed(Question question, int value, Weight weight) {
+        Criteria criteria1 = new Criteria();
+        criteria1.add(new Criterion(new Answer(question, value), weight));
+        return criteria1;
+    }
 }
