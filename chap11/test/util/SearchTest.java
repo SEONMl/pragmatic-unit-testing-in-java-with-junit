@@ -3,10 +3,14 @@ package util;
 
 import java.io.*;
 import java.net.*;
+
 import org.junit.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.logging.*;
+
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,17 +18,26 @@ import static util.ContainsMatches.*;
 
 public class SearchTest {
     private static final String A_TITLE = "1";
+    private InputStream stream;
+
+    @BeforeEach
+    public void turnOffLogging() {
+        Search.LOGGER.setLevel(Level.OFF);
+    }
+
+    @AfterEach
+    public void closeResources() throws IOException {
+        stream.close();
+    }
 
     @Test
-    public void returnsMatchesShowingContextWhenSearchStringInContent()
-            throws IOException {
-        InputStream stream =
-                streamOn("There are certain queer times and occasions "
-                        + "in this strange mixed affair we call life when a man "
-                        + "takes this whole universe for a vast practical joke, "
-                        + "though the wit thereof he but dimly discerns, and more "
-                        + "than suspects that the joke is at nobody's expense but "
-                        + "his own.");
+    public void returnsMatchesShowingContextWhenSearchStringInContent() {
+        stream = streamOn("There are certain queer times and occasions "
+                + "in this strange mixed affair we call life when a man "
+                + "takes this whole universe for a vast practical joke, "
+                + "though the wit thereof he but dimly discerns, and more "
+                + "than suspects that the joke is at nobody's expense but "
+                + "his own.");
         // search
         Search search = new Search(stream, "practical joke", A_TITLE);
         Search.LOGGER.setLevel(Level.OFF);
@@ -32,9 +45,8 @@ public class SearchTest {
         search.execute();
         assertFalse(search.errored());
         assertEquals(search.getMatches(), containsMatches(new Match[]
-                { new Match(A_TITLE, "practical joke",
-                        "or a vast practical joke, though t") }));
-        stream.close();
+                {new Match(A_TITLE, "practical joke",
+                        "or a vast practical joke, though t")}));
     }
 
     @Test
@@ -42,11 +54,10 @@ public class SearchTest {
             throws MalformedURLException, IOException {
         URLConnection connection =
                 new URL("http://bit.ly/15sYPA7").openConnection();
-        InputStream inputStream = connection.getInputStream();
-        Search search = new Search(inputStream, "smelt", A_TITLE);
+        stream = connection.getInputStream();
+        Search search = new Search(stream, "smelt", A_TITLE);
         search.execute();
         assertTrue(search.getMatches().isEmpty());
-        inputStream.close();
     }
 
     private InputStream streamOn(String pageContent) {
