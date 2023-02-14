@@ -3,6 +3,7 @@ package iloveyouboss;
 import java.io.*;
 import org.json.simple.parser.*;
 import org.junit.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import util.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -11,11 +12,21 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class AddressRetrieverTest {
+
+    @Mock // mock을 합성하는 곳
+    private Http http;
+    @InjectMocks // mock을 주입하고자 하는 대상
+    private AddressRetriever retriever;
+
+    @BeforeEach
+    public void createRetriever() {
+        retriever=new AddressRetriever();
+        MockitoAnnotations.initMocks(this);
+    }
     @Test
     public void answersAppropriateAddressForValidCoordinates()
             throws IOException, ParseException {
         // mock 인스턴스
-        Http http = mock(Http.class);
         when(http.get(contains("lat=38.000000&lon=-104.000000"))) // 테스트 기대사항 설정
                 .thenReturn( // 기대사항이 충족되었을 때 처리
                 "{\"address\":{"
