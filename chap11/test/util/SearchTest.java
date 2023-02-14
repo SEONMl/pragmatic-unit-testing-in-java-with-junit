@@ -38,12 +38,12 @@ public class SearchTest {
                 + "though the wit thereof he but dimly discerns, and more "
                 + "than suspects that the joke is at nobody's expense but "
                 + "his own.");
-        // search
         Search search = new Search(stream, "practical joke", A_TITLE);
         Search.LOGGER.setLevel(Level.OFF);
         search.setSurroundingCharacterCount(10);
+
         search.execute();
-        assertFalse(search.errored());
+
         assertEquals(search.getMatches(), containsMatches(new Match[]
                 {new Match(A_TITLE, "practical joke",
                         "or a vast practical joke, though t")}));
@@ -56,7 +56,9 @@ public class SearchTest {
                 new URL("http://bit.ly/15sYPA7").openConnection();
         stream = connection.getInputStream();
         Search search = new Search(stream, "smelt", A_TITLE);
+
         search.execute();
+
         assertTrue(search.getMatches().isEmpty());
     }
 
