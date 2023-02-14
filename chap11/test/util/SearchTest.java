@@ -14,8 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class SearchTest {
     @Test
-    public void testSearch() {
-        try {
+    public void testSearch() throws  IOException {
             String pageContent = "There are certain queer times and occasions "
                     + "in this strange mixed affair we call life when a man "
                     + "takes this whole universe for a vast practical joke, "
@@ -31,7 +30,6 @@ public class SearchTest {
             search.execute();
             assertFalse(search.errored());
             List<Match> matches = search.getMatches();
-            assertEquals(matches, is(notNullValue()));
             assertTrue(matches.size() >= 1);
             Match match = matches.get(0);
             assertEquals(match.searchString, ("practical joke"));
@@ -47,9 +45,5 @@ public class SearchTest {
             search.execute();
             assertEquals(search.getMatches().size(), 0);
             stream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-            fail("exception thrown in test" + e.getMessage());
-        }
     }
 }
