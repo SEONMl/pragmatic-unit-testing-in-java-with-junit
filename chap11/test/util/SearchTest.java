@@ -14,6 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static util.ContainsMatches.containsMatches;
 
 public class SearchTest {
+    private static final String A_TITLE = "1";
     @Test
     public void testSearch() throws  IOException {
             String pageContent = "There are certain queer times and occasions "
@@ -25,13 +26,13 @@ public class SearchTest {
             byte[] bytes = pageContent.getBytes();
             ByteArrayInputStream stream = new ByteArrayInputStream(bytes);
             // search
-            Search search = new Search(stream, "practical joke", "1");
+            Search search = new Search(stream, "practical joke", A_TITLE);
             Search.LOGGER.setLevel(Level.OFF);
             search.setSurroundingCharacterCount(10);
             search.execute();
             assertFalse(search.errored());
             assertEquals(search.getMatches(), containsMatches(new Match[] {
-                    new Match("1", "practical joke","or a vast practical joke, though t") }));
+                    new Match(A_TITLE, "practical joke","or a vast practical joke, though t") }));
 
             stream.close();
 
@@ -39,7 +40,7 @@ public class SearchTest {
             URLConnection connection =
                     new URL("http://bit.ly/15sYPA7").openConnection();
             InputStream inputStream = connection.getInputStream();
-            search = new Search(inputStream, "smelt", "http://bit.ly/15sYPA7");
+            search = new Search(inputStream, "smelt", A_TITLE);
             search.execute();
             assertTrue(search.getMatches().isEmpty());
             stream.close();
