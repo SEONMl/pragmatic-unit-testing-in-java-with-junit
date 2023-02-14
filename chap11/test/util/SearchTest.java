@@ -11,6 +11,7 @@ import java.util.logging.*;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import static org.junit.jupiter.api.Assertions.*;
+import static util.ContainsMatches.containsMatches;
 
 public class SearchTest {
     @Test
@@ -29,12 +30,9 @@ public class SearchTest {
             search.setSurroundingCharacterCount(10);
             search.execute();
             assertFalse(search.errored());
-            List<Match> matches = search.getMatches();
-            assertTrue(matches.size() >= 1);
-            Match match = matches.get(0);
-            assertEquals(match.searchString, ("practical joke"));
-            assertEquals(match.surroundingContext,
-                    ("or a vast practical joke, though t"));
+            assertEquals(search.getMatches(), containsMatches(new Match[] {
+                    new Match("1", "practical joke","or a vast practical joke, though t") }));
+
             stream.close();
 
             // negative
@@ -43,7 +41,7 @@ public class SearchTest {
             InputStream inputStream = connection.getInputStream();
             search = new Search(inputStream, "smelt", "http://bit.ly/15sYPA7");
             search.execute();
-            assertEquals(search.getMatches().size(), 0);
+            assertTrue(search.getMatches().isEmpty());
             stream.close();
     }
 }
