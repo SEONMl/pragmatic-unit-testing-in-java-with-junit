@@ -9,8 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.Assert.*;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static util.ContainsMatches.*;
 
 public class SearchTest {
@@ -52,6 +51,36 @@ public class SearchTest {
 
         assertTrue(search.getMatches().isEmpty());
     }
+
+    @Test
+    public void returnsErroredWhenUnableToReadStream() {
+        stream = createStreamThrowingErrorWhenRead();
+        Search search = new Search(stream, "","");
+
+        search.execute();
+
+        assertTrue(search.errored());
+    }
+
+    @Test
+    public void erroredReturnsFalseWhenReadSucceeds() {
+        stream = streamOn("");
+        Search search = new Search(stream, "", "");
+
+        search.execute();
+
+        assertFalse(search.errored());
+    }
+
+    private InputStream createStreamThrowingErrorWhenRead() {
+        return new InputStream() {
+            @Override
+            public int read() throws IOException {
+                throw new IOException();
+            }
+        };
+    }
+
 
     private InputStream streamOn(String pageContent) {
         return new ByteArrayInputStream(pageContent.getBytes());
