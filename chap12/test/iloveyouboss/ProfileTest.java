@@ -11,6 +11,7 @@ class ProfileTest {
     private BooleanQuestion questionIsThereRelocation;
     private Answer answerThereIsRelocation;
     private Answer answerThereIsNotRelocation;
+    private Answer answerDoesNotReimburseTuition;
 
     @BeforeEach
     public void createProfile(){
@@ -22,6 +23,7 @@ class ProfileTest {
         questionIsThereRelocation = new BooleanQuestion(1, "Relocation package?");
         answerThereIsRelocation = new Answer(questionIsThereRelocation, Bool.TRUE);
         answerThereIsNotRelocation = new Answer(questionIsThereRelocation, Bool.FALSE);
+        answerDoesNotReimburseTuition = new Answer(questionIsThereRelocation, Bool.FALSE);
     }
 
     @Test
@@ -51,5 +53,16 @@ class ProfileTest {
         boolean matches = profile.matches(criterion);
 
         assertFalse(matches);
+    }
+
+    @Test
+    public void matchesWhenContaionsMultipleAnswer() {
+        profile.add(answerThereIsRelocation);
+        profile.add(answerDoesNotReimburseTuition);
+        Criterion criterion = new Criterion(answerThereIsRelocation, Weight.Important);
+
+        boolean result = profile.matches(criterion);
+
+        assertTrue(result);
     }
 }
