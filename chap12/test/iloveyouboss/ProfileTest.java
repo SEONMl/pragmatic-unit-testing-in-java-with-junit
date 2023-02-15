@@ -1,20 +1,44 @@
 package iloveyouboss;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ProfileTest {
+    private Profile profile;
+    private BooleanQuestion questionIsThereRelocation;
+    private Answer answerThereIsRelocation;
+
+    @BeforeEach
+    public void createProfile(){
+        profile = new Profile();
+    }
+
+    @BeforeEach
+    public void createQuestionAndAnswer(){
+        questionIsThereRelocation = new BooleanQuestion(1, "Relocation package?");
+        answerThereIsRelocation = new Answer(questionIsThereRelocation, Bool.TRUE);
+    }
 
     @Test
     public void matchesNothingWhenProfileEmpty() {
-        Profile profile = new Profile();
-        Question question = new BooleanQuestion(1, "Relocation package?");
-        Criterion criterion = new Criterion(new Answer(question, Bool.TRUE), Weight.DontCare);
+        Criterion criterion = new Criterion(answerThereIsRelocation, Weight.DontCare);
 
         boolean result = profile.matches(criterion);
 
         assertFalse(result);
+    }
+
+    @Test
+    public void matchesWhenProfileContainsMatchingAnswer() {
+        profile.add(answerThereIsRelocation);
+        Criterion criterion = new Criterion(answerThereIsRelocation, Weight.Important);
+
+        boolean re = profile.matches(criterion);
+
+        assertTrue(re);
     }
 
 }
